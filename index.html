@@ -1,1 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+		<title>Andela BC 20 Places Finder</title>
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="style.css" type="text/css">
+		<script src="finder.js"></script>
+		<style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 50%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAoerMHoDpL1T7NHke6O3GIFnuSARJLpqI&libraries=places&callback=initMap" async defer></script>
+  </head>
+<body>
+
 <h1>Places Finder</h1>
+<div>
+	<form name="searchPlaces" id="searchPlaces">
+		<div>
+			<label>Enter your preferred destination:</label>
+			<input type="text" name="" id="placeToFind" class="" required/>
+			<label>Select the preferred destination category:</label>
+			<select id="categoryToFind">
+				<option value="">Select one</option>
+				<option value="church">Churches</option>
+				<option value="bank">Banks</option>
+				<option value="restaurant">Restaurants</option>
+				<option value="airport">Airports</option>
+			</select>
+			<a href="javascript:void(0)" onclick="searchQuery()" name="searchBtn" id="searchBtn">Search</a>
+		</div>
+	</form>
+</div>
+<div id="map"></div>
+<p id="demo"></p>
+<p id="closeby"></p>
+<p id="placesList"></p>
+<p id="more"></p>
+
+</body>
+</html>
