@@ -8,7 +8,7 @@
 // failed.", it means you probably did not give permission for the browser to
 // locate you.
 
-
+//  declare all global variables
 var myLocation;
 var map;
 var byDistance;
@@ -24,38 +24,43 @@ var myStorage = localStorage;
 *   This function will initialize the Google Maps
 */
 window.onload = function() {
-  //  Call the Map initialization function
+  //  Call the Map initialization and add to favorite functions
   initMap();
   addToFavPlacesList();
 
+  //  message to display if no query has been run
   document.getElementById('closeby').innerHTML = 'No location has been selected.';
+  
+  //  message to display indicating number of favorite places
   document.getElementById('info').innerHTML = 'There are '
                 + myStorage.length + ' items in your favorite list.';
   
-  //  Prevent default form submission action
+  //  Prevent default search form submission action
   document.getElementById('searchBtn').addEventListener('click', function(event){
     event.preventDefault()
   });
 }
 
 function initMap() {
-
-  // Try HTML5 geolocation.
+  //  Try HTML5 geolocation.
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
+      
+      //  set current user location
       myLocation = {
         lat: position.coords.latitude,
         lng: position.coords.longitude
       };
 
+      //  initialize the map
       map = new google.maps.Map(document.getElementById('map'), {
         center: myLocation,
         zoom: 11,
         mapTypeId:google.maps.MapTypeId.ROADMAP
       });
 
+      //  initialize the info window
       infoWindow = new google.maps.InfoWindow({map: map});
-
       infoWindow.setPosition(myLocation);
       infoWindow.setContent('Location found.');
       map.setCenter(myLocation);
@@ -65,34 +70,34 @@ function initMap() {
       if (position.vicinity === undefined) {
         var address = 'Address unknown';
       } else {
-        var address = position.vicinity;
+        var address = position.address;
       }
       document.getElementById('curLocation').innerHTML = '<b>Address</b>: ' +  address
           + '<br/><b>Latitude</b>: ' + myLocation.lat
           + ' & <b>Longitude</b>: ' + myLocation.lng;
     }, function() {
-      
-      //            CRITICAL CODE DEBUG NEEDED HERE
-      //            DEBUG THIS CODE ERROR
-      //  Uncaught TypeError: Cannot read property 'getCenter' of undefined
+      //  display the map if it loaded successfully
       handleLocationError(true, infoWindow, map.getCenter());
     });
   } else {
-    // If browser doesn't support Geolocation, handle the error.
+    //  If browser doesn't support Geolocation, handle the error.
     handleLocationError(false, infoWindow, map.getCenter());
   }
 }
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+  //  function to handle the check if browser supports HTML5 geolocation
   infoWindow.setPosition(pos);
   infoWindow.setContent(browserHasGeolocation ?
-                        'Error: The Geolocation service failed.' :
-                        'Error: Your browser doesn\'t support geolocation.');
+          'Error: The Geolocation service failed.' :
+          'Error: Your browser doesn\'t support geolocation.');
 }
 
 function getTextLocation() {
+  //  obtain the text-field user input and set to 'byTextInput'
   byTextInput = document.getElementById('placeToFind').value;
 
+  //  empty the div to display the search result
   document.getElementById('placesList').innerHTML = '';
 
   var request = {
@@ -101,48 +106,47 @@ function getTextLocation() {
   }
 
   var service = new google.maps.places.PlacesService(map);
+
+  //  call the function to obtain the nearby location
   service.textSearch(request, processRequest);
 }
 
 function getLocations() {
+  //  obtain the select-box user inputs
   byInterest = document.getElementById('placeOfInterest').value;
   byDistance = document.getElementById('distance').value;
 
+  //  empty the div to display the search result
   document.getElementById('placesList').innerHTML = '';
 
   if (byInterest !== '') {
-    findLocation();
+    var request = {
+      location: myLocation,
+      radius: byDistance,
+      type: [byInterest]
+    }
+
+    var service = new google.maps.places.PlacesService(map);
+
+    //  call the function to obtain the nearby location
+    service.nearbySearch(request, processRequest);
   } else {
     //  alert('No place of interest was selected.');
   }
-}
-
-function findLocation() {
-  var request = {
-    location: myLocation,
-    radius: byDistance,
-    type: [byInterest]
-  }
-  var service = new google.maps.places.PlacesService(map);
-  service.nearbySearch(request, processRequest);
 }
 
 function processRequest(response, status) {
   var bounds = new google.maps.LatLngBounds();
 
   if (status === google.maps.places.PlacesServiceStatus.OK) {
-    //document.getElementById('closeby').innerHTML = 'Found locations';
-
     //  THIS LINE IS CURRENTLY FOR DEBUGGING ERRORS WITH REGARD TO RETURNING THE CURRENT USER LOCATION
     //  WILL BE FULLY EDITTED TO RESPOND AS IT SHOULD.
     //  console.table(response[i]);
     clearMarkers();
     for (var i = 0; i < response.length; i++) {
       createMarkers(response[i]);
-      addFav(response[i]);
+      addFav();
       bounds.extend(response[i].geometry.location);
-
-      //console.log(response[i]);
     }
     map.fitBounds(bounds);
     document.getElementById('closeby').innerHTML = 'Found ' + response.length + ' ' + byInterest + ' locations';
@@ -154,28 +158,31 @@ function processRequest(response, status) {
 }
 
 function createMarkers(place) {
+  //  function to display markers on the map
   var marker = new google.maps.Marker({
       map: map,
       title: place.name,
       position: place.geometry.location
     });
 
+  //  add marker to the Markers array
   markers.push(marker);
 
-  infoWindow = new google.maps.InfoWindow({
-    content: '<img src="' + place.icon + '"/><font style="color:gray">' +
-    place.name + '<br />Vicinity: ' + place.vicinity + '</font>'
+  infowindow = new google.maps.InfoWindow();
+
+  google.maps.event.addListener(marker, 'click', function() {
+    infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
+      place.vicinity + '</div>');
+    infowindow.open(map, this);
   });
 
-  var checkboxValue = place.name + 'andPlaceIdValue' + place.place_id;
-  checkFav(checkboxValue);
-
-  google.maps.event.addListener(marker, 'click', function(){
-    infoWindow.open(map, this);
-  });
+  //  Concatenate the placeName and placeId to pass into the checkFav function.
+  //  var checkboxValue = place.name + 'andPlaceIdValue' + place.place_id;
+  checkFav(place.name, place.place_id);
 }
 
 function clearMarkers() {
+  //  function to clear markers when the map is reloaded
   if (markers) {
     for(i in markers) {
       markers[i].setMap(null);
@@ -184,39 +191,53 @@ function clearMarkers() {
   }
 }
 
-function addFav(place) {
+function addFav() {
   var checkBoxList = document.querySelectorAll('input[type=checkbox]');
   for (var item of checkBoxList) {
     item.addEventListener('change', function(){
-      var splitName = this.value.split('andPlaceIdValue');
-      var favKey = splitName[1];
-      var favValue = splitName[0];
+
+      //  check if the user has ticked any checkbox
       if (this.checked) {
         //  Insert place info into Favorite array
-        favorite.push(this.value);
+        //  favorite.push(this.value);
+
+        //console.log(this.className + ', & ' + this.value);
 
         //  Insert place info into local storage
         if (typeof(Storage) !== 'undefined') {
-          // Add Key/Value Pair into localStorage.
-          myStorage.setItem(favKey, favValue);
+          
+          //  Add Key/Value Pair into myStorage.
+          myStorage.setItem(this.value, this.className);
+          console.log(this.value, this.className);
+
+          /*  Call the function to display the newly added favorite place
+          *   in the favPlace div on the front end
+          */
           addToFavPlacesList();
+
+          //  Display the number of favorite places the user has.
           document.getElementById('info').innerHTML = 'There are '
                 + myStorage.length + ' items in your favorite list.';
         } else {
-          //  Sorry! No Web Storage support..
-          //  Write an error message here
+          /*  Sorry! No Web Storage support..
+          *  Write an error message here
+          */
         }
       } else {
-        //  Remove item from localStorage and the Favorite list
+        //  Remove item from the front-end Favorite list
         var parent = document.getElementById('favPlacesList');
-        var child = document.getElementById(favKey);
+        var child = document.getElementById(this.value);
         parent.removeChild(child);
 
-        favorite.pop(this.value);
-        console.log(favValue + ' has been removed from favorite');
+        //favorite.pop(this.value);
 
-        localStorage.removeItem(favKey);
-        //addToFavPlacesList();
+        //  Remove item from myStorage
+        myStorage.removeItem(this.value);
+        console.log(this.className + ' has been removed from the myStorage');
+
+        //  addToFavPlacesList();
+
+        //  After deleting favPlace, display the number of favorite places the user has.
         document.getElementById('info').innerHTML = 'There are '
                 + myStorage.length + ' items in your favorite list.';
       }
@@ -224,34 +245,42 @@ function addFav(place) {
   }
 }
 
-function checkFav(place) {
-  var splitName = place.split('andPlaceIdValue');
-  var placeName = splitName[0];
-  var placeId = splitName[1];
-  console.log(localStorage[placeId]);
-  if (localStorage[placeId]) {
+function checkFav(placeName, placeId) {
+  // var splitName = place.split('andPlaceIdValue');
+  // var placeName = splitName[0];
+  // var placeId = splitName[1];
+  //  console.log(myStorage[placeId]);
+
+  /*  The checkFav function checks if the location has been marked as favorite
+  *   If the location is marked favorite, the checkbox is checked
+  */
+  if (myStorage[placeId]) {
     document.getElementById('placesList').innerHTML += '<li>' + placeName +
         ' Unmark as Favourite: <input type="checkbox" id="favorite' + placeId +
-        '" value="' + place + '" checked/></li><br/>';
+        '" value="' + placeId + '" class="' + placeName + '" checked/></li><br/>';
   } else {
     document.getElementById('placesList').innerHTML += '<li>' + placeName + 
         ' Mark as Favourite: <input type="checkbox" id="favorite' + placeId +
-        '" value="' + place + '"/></li><br/>';
+        '" value="' + placeId + '" class="' + placeName + '"/></li><br/>';
   }
 }
 
 function addToFavPlacesList() {
+
+  //  Display the favorite place in the favPlace div on the front end
   document.getElementById('favPlacesList').innerHTML = '';
-  if (localStorage.length > 0) {
-    for (var i = 0; i <= localStorage.length; i++) {
-      if (localStorage.key(i) !== null) {
+  if (myStorage.length > 0) {
+    for (var i = 0; i <= myStorage.length; i++) {
+      //  If the placeId exists in the localStorage, then add it to the display
+      if (myStorage.key(i) !== null) {
         var count = i + 1;
-        document.getElementById('favPlacesList').innerHTML += '<p id="' + localStorage.key(i)
-              + '">(' + count + '.)   '+ localStorage.getItem(localStorage.key(i)) + '</p>';
-        console.log(localStorage.getItem(localStorage.key(i)));
+        document.getElementById('favPlacesList').innerHTML += '<p id="' + myStorage.key(i)
+              + '">(' + count + '.)   '+ myStorage.getItem(myStorage.key(i)) + '</p>';
+        //console.log(myStorage.getItem(myStorage.key(i)));
       }
     };
   } else {
+    //  If there is no placeId in the localStorage, then display this.
     document.getElementById('favPlacesList').innerHTML = 'You do not currently have any Favorite locations';
   }
 }
