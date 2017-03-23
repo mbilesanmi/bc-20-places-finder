@@ -17,7 +17,6 @@ var byTextInput;
 var infoWindow;
 var markers = [];
 var favorite = [];
-var myStorage;
 
 //  var markers = new Array();
 
@@ -186,26 +185,31 @@ function addFav(place) {
       var favKey = splitName[1];
       var favValue = splitName[0];
       if (this.checked) {
-        //console.log(this.value);
-        //console.log(splitName);
+        console.log("Favkey " + favKey);
+        console.log("splitname " + splitName);
+        console.log("FavValue " + favValue);
         favorite.push(this.value);
 
         //  Implement local storage
         if (typeof(Storage) !== "undefined") {
-          // Code for localStorage/sessionStorage.
+          // Code for localStorage.
           localStorage.setItem(favKey, favValue);
+          var myStorage = localStorage.getItem(favKey);
+          console.log("Value is " + myStorage);
+          //console.log(localStorage.favValue);
         } else {
           // Sorry! No Web Storage support..
+          console.log("This is undefined.");
         }
 
-        if (localStorage.favKey) {
-          localStorage.favKey = Number(localStorage.favKey) + 1;
-          // Retrieve
-          document.getElementById("result").innerHTML = "There are "
-                + localStorage.favKey + " items in your favorite list.";
-        } else {
-          localStorage.favKey = 1;
-        }
+        // if (myStorage.favKey) {
+        //   myStorage.favKey = Number(myStorage.favKey) + 1;
+        //   // Retrieve
+        //   document.getElementById("result").innerHTML = "There are "
+        //         + myStorage.favKey + " items in your favorite list.";
+        // } else {
+        //   myStorage.favKey = 1;
+        // }
 
         document.getElementById('favPlacesList').innerHTML += '<li id="' + favValue + '">' + favValue + '</li>';
 
