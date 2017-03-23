@@ -73,25 +73,72 @@
 				<div id="map" class="map"></div>
 			</div>
 
-			<div id="listsArea" class="listsArea left-align">
-				
-				<div id="info"></div>
-				<div class="clear"></div>
-			
-				<h3 class="title">Current Location</h3>
-				<div id="curLocation"></div>
-				<div class="clear"></div>
+			<div id="listsArea" class="listsArea">
+				<div class="myLists">
 
-				<div id="favPlaces" class="favPlaces">
-					<h3 class="title">Favorite Locations</h3>
-					<ul id="favPlacesList"></ul>
+					<div>
+
+						<div class="list">
+							<div id="info"></div>
+							<div class="clear"></div>
+						</div>
+					
+						<div class="list">
+							<div class="listTitle">
+								<h3 class="title">Current Location</h3>
+							</div>
+							<div id="curLocation"></div>
+						</div>
+						<div class="clear"></div>
+
+						<div class="tab">
+						  <button class="tablinks" onclick="openTab(event, 'favLocate')" id="defaultOpen">Favorite</button>
+						  <button class="tablinks" onclick="openTab(event, 'nearLocate')">Nearby</button>
+						</div>
+
+						<div id="favLocate" class="tabcontent">
+						  <div id="favPlaces" class="favPlaces">
+						  	<div id="favPlacesList"></div>
+						  </div>
+						</div>
+
+						<div id="nearLocate" class="tabcontent">
+						  <div id="closeby" class=""></div>
+							<div id="placesList" class=""></div>
+						</div>
+						
+					</div>
 				</div>
-				<div class="clear"></div>
-				<div id="closeby" class="right-align"></div>
-				<div id="placesList" class="right-align"></div>
 			</div>
 
 		</div>
 
+		<script>
+			function openTab(evt, tabName) {
+		    // Declare all variables
+		    var i;
+		    var tabcontent;
+		    var tablinks;
+
+		    // Get all elements with class="tabcontent" and hide them
+		    tabcontent = document.getElementsByClassName("tabcontent");
+		    for (i = 0; i < tabcontent.length; i++) {
+		      tabcontent[i].style.display = "none";
+		    }
+
+		    // Get all elements with class="tablinks" and remove the class "active"
+		    tablinks = document.getElementsByClassName("tablinks");
+		    for (i = 0; i < tablinks.length; i++) {
+	        tablinks[i].className = tablinks[i].className.replace(" active", "");
+		    }
+
+		    // Show the current tab, and add an "active" class to the button that opened the tab
+		    document.getElementById(tabName).style.display = "block";
+		    evt.currentTarget.className += " active";
+			}
+
+			// Get the element with id="defaultOpen" and click on it
+				document.getElementById("defaultOpen").click();
+		</script>
 	</body>
 </html>

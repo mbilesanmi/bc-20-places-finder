@@ -19,8 +19,6 @@ var markers = [];
 var favorite = [];
 var myStorage = localStorage;
 
-//  var markers = new Array();
-
 /*  
 *   On loading the page, run the initMap function.
 *   This function will initialize the Google Maps
@@ -29,9 +27,13 @@ window.onload = function() {
   //  Call the Map initialization function
   initMap();
   addToFavPlacesList();
+
+  document.getElementById('closeby').innerHTML = 'No location has been selected.';
+  document.getElementById('info').innerHTML = 'There are '
+                + myStorage.length + ' items in your favorite list.';
   
   //  Prevent default form submission action
-  document.getElementById("searchBtn").addEventListener("click", function(event){
+  document.getElementById('searchBtn').addEventListener('click', function(event){
     event.preventDefault()
   });
 }
@@ -61,7 +63,7 @@ function initMap() {
       // THIS LINE IS CURRENTLY FOR DEBUGGING ERRORS WITH REGARD TO RETURNING THE CURRENT USER LOCATION
       // WILL BE FULLY EDITTED TO RESPOND AS IT SHOULD.
       if (position.vicinity === undefined) {
-        var address = "Address unknown";
+        var address = 'Address unknown';
       } else {
         var address = position.vicinity;
       }
@@ -90,7 +92,6 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 
 function getTextLocation() {
   byTextInput = document.getElementById('placeToFind').value;
-  //byDistance = document.getElementById('distance').value;
 
   document.getElementById('placesList').innerHTML = '';
 
@@ -109,11 +110,10 @@ function getLocations() {
 
   document.getElementById('placesList').innerHTML = '';
 
-  if (byInterest !== "") {
+  if (byInterest !== '') {
     findLocation();
-    //alert('Place of Interest is ' + byInterest);
   } else {
-    //alert('No place of interest was selected.');
+    //  alert('No place of interest was selected.');
   }
 }
 
@@ -129,14 +129,13 @@ function findLocation() {
 
 function processRequest(response, status) {
   var bounds = new google.maps.LatLngBounds();
-  //var placesList = document.getElementById('placesList');
 
   if (status === google.maps.places.PlacesServiceStatus.OK) {
     //document.getElementById('closeby').innerHTML = 'Found locations';
 
     //  THIS LINE IS CURRENTLY FOR DEBUGGING ERRORS WITH REGARD TO RETURNING THE CURRENT USER LOCATION
     //  WILL BE FULLY EDITTED TO RESPOND AS IT SHOULD.
-    //console.table(response[i]);
+    //  console.table(response[i]);
     clearMarkers();
     for (var i = 0; i < response.length; i++) {
       createMarkers(response[i]);
@@ -146,10 +145,10 @@ function processRequest(response, status) {
       //console.log(response[i]);
     }
     map.fitBounds(bounds);
-    document.getElementById("closeby").innerHTML = 'Found ' + response.length + ' ' + byInterest + ' locations';
+    document.getElementById('closeby').innerHTML = 'Found ' + response.length + ' ' + byInterest + ' locations';
   } else {
     initMap();
-    document.getElementById("closeby").innerHTML = 'Location not found or out of range';
+    document.getElementById('closeby').innerHTML = 'Location not found or out of range';
     return;
   }
 }
@@ -189,7 +188,7 @@ function addFav(place) {
   var checkBoxList = document.querySelectorAll('input[type=checkbox]');
   for (var item of checkBoxList) {
     item.addEventListener('change', function(){
-      var splitName = this.value.split("andPlaceIdValue");
+      var splitName = this.value.split('andPlaceIdValue');
       var favKey = splitName[1];
       var favValue = splitName[0];
       if (this.checked) {
@@ -197,12 +196,12 @@ function addFav(place) {
         favorite.push(this.value);
 
         //  Insert place info into local storage
-        if (typeof(Storage) !== "undefined") {
+        if (typeof(Storage) !== 'undefined') {
           // Add Key/Value Pair into localStorage.
           myStorage.setItem(favKey, favValue);
           addToFavPlacesList();
-          document.getElementById("info").innerHTML = "There are "
-                + myStorage.length + " items in your favorite list.";
+          document.getElementById('info').innerHTML = 'There are '
+                + myStorage.length + ' items in your favorite list.';
         } else {
           //  Sorry! No Web Storage support..
           //  Write an error message here
@@ -214,19 +213,19 @@ function addFav(place) {
         parent.removeChild(child);
 
         favorite.pop(this.value);
-        console.log(favValue + " has been removed from favorite");
+        console.log(favValue + ' has been removed from favorite');
 
         localStorage.removeItem(favKey);
         //addToFavPlacesList();
-        document.getElementById("info").innerHTML = "There are "
-                + myStorage.length + " items in your favorite list.";
+        document.getElementById('info').innerHTML = 'There are '
+                + myStorage.length + ' items in your favorite list.';
       }
     });
   }
 }
 
 function checkFav(place) {
-  var splitName = place.split("andPlaceIdValue");
+  var splitName = place.split('andPlaceIdValue');
   var placeName = splitName[0];
   var placeId = splitName[1];
   console.log(localStorage[placeId]);
@@ -239,24 +238,6 @@ function checkFav(place) {
         ' Mark as Favourite: <input type="checkbox" id="favorite' + placeId +
         '" value="' + place + '"/></li><br/>';
   }
-
-  // for (var i = 0; i <= localStorage.length; i++) {
-  //   if (localStorage.key(i) === placeId) {
-  //     document.getElementById('placesList').innerHTML += '<li>' + placeName +
-  //       ' Unmark as Favourite: <input type="checkbox" id="favorite' + placeId +
-  //       '" value="' + place + '" checked/></li><br/>';
-  //   } else {
-  //   }
-  // }
-  // var fav = favorite.indexOf(place);
-
-  // if (fav === -1) {
-  //   //console.log('not ' + place);
-    
-  // } else {
-  //   //console.log(place);
-    
-  // }
 }
 
 function addToFavPlacesList() {
@@ -264,7 +245,9 @@ function addToFavPlacesList() {
   if (localStorage.length > 0) {
     for (var i = 0; i <= localStorage.length; i++) {
       if (localStorage.key(i) !== null) {
-        document.getElementById('favPlacesList').innerHTML += '<li id="' + localStorage.key(i) + '">' + localStorage.getItem(localStorage.key(i)) + '</li>';
+        var count = i + 1;
+        document.getElementById('favPlacesList').innerHTML += '<p id="' + localStorage.key(i)
+              + '">(' + count + '.)   '+ localStorage.getItem(localStorage.key(i)) + '</p>';
         console.log(localStorage.getItem(localStorage.key(i)));
       }
     };
