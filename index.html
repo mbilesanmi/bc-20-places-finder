@@ -6,89 +6,92 @@
 		<meta charset="utf-8">
 		<link rel="stylesheet" href="style.css" type="text/css">
 		<script src="main.js"></script>
-		<style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map.
-      #map {
-        height: 50%;
-      }
-      Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-    </style>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAoerMHoDpL1T7NHke6O3GIFnuSARJLpqI&libraries=places&callback=initMap" async defer></script>
   </head>
-<body>
 
-	<div id="result"></div>
+	<body>
+		<div class="header">
+			<h1 class="left-align">Places Finder</h1>
 
-<h1>Places Finder</h1>
-<div>
-	<p id="demo"></p>
-	<div id="favPlaces">
-		<ul id="favPlacesList"></ul>
-	</div>
-	<form name="searchPlaces" id="searchPlaces" action="">
-		<div>
-			<label>Enter your preferred destination: </label>
-			<input type="text" name="" id="placeToFind" class="" required/>
-			<button onclick="getTextLocation()" id="searchBtn">Search</button>
-		</form>
-		<form name="" action="">
-			<br/><br/>
-			Find your preferred
-			<select id="placeOfInterest" onchange="getLocations();">
-				<option value="">Place of Interest</option>
-				<option value="airport">Airports</option>
-				<option value="amusement_park">Amusement parks</option>
-				<option value="art_gallery">Art galleries</option>
-				<option value="atm">ATMs</option>
-				<option value="bakery">Bakeries</option>
-				<option value="bank">Banks</option>
-				<option value="bar">Bars</option>
-				<option value="beauty_salon">Beauty salons</option>
-				<option value="book_store">Book stores</option>
-				<option value="car_dealer">Car dealers</option>
-				<option value="car_repair">Car repair</option>
-				<option value="church">Churches</option>
-				<option value="convenience_store">Convenience stores</option>
-				<option value="courthouse">Courthouses</option>
-				<option value="dentist">Dentists</option>
-				<option value="department_store">Department stores</option>
-				<option value="embassy">Embassies</option>
-				<option value="hospital">Hospitals</option>
-				<option value="library">Libraries</option>
-				<option value="local_government_office">LG's Office</option>
-				<option value="mosque">Mosque</option>
-				<option value="movie_theater">Movie theater</option>
-				<option value="museum">Museum</option>
-				<option value="night_club">Night clubs</option>
-				<option value="police">Police</option>
-				<option value="post_office">Post office</option>
-				<option value="restaurant">Restaurants</option>
-				<option value="school">Schools</option>
-				<option value="shopping_mall">Shopping malls</option>
-				<option value="stadium">Stadia</option>
-				<option value="university">University</option>
-				<option value="zoo">Zoo</option>
-			</select> within 
-			<select id="distance" onchange="getLocations();">
-				<option value="500">500</option>
-				<option value="1000">1000</option>
-				<option value="1500">1500</option>
-				<option value="2000">2000</option>
-			</select> metres.
+			<div class="queryBox">
+			
+				<form name="searchPlaces" id="searchPlaces" action="" class="searchForm left-align">
+					<label>Enter your preferred destination: </label>
+					<input type="text" name="" id="placeToFind" class="" required/>
+					<button onclick="getTextLocation()" id="searchBtn">Search</button>
+				</form>
+				
+				<form name="searchBySelect" action="" class="searchForm right-align">
+					Find your preferred
+					<select id="placeOfInterest" onchange="getLocations();">
+						<option value="">Place of Interest</option>
+						<option value="airport">Airports</option>
+						<option value="amusement_park">Amusement parks</option>
+						<option value="art_gallery">Art galleries</option>
+						<option value="atm">ATMs</option>
+						<option value="bakery">Bakeries</option>
+						<option value="bank">Banks</option>
+						<option value="bar">Bars</option>
+						<option value="beauty_salon">Beauty salons</option>
+						<option value="book_store">Book stores</option>
+						<option value="car_dealer">Car dealers</option>
+						<option value="car_repair">Car repair</option>
+						<option value="church">Churches</option>
+						<option value="convenience_store">Convenience stores</option>
+						<option value="courthouse">Courthouses</option>
+						<option value="dentist">Dentists</option>
+						<option value="department_store">Department stores</option>
+						<option value="embassy">Embassies</option>
+						<option value="hospital">Hospitals</option>
+						<option value="library">Libraries</option>
+						<option value="local_government_office">LG's Office</option>
+						<option value="mosque">Mosque</option>
+						<option value="movie_theater">Movie theater</option>
+						<option value="museum">Museum</option>
+						<option value="night_club">Night clubs</option>
+						<option value="police">Police</option>
+						<option value="post_office">Post office</option>
+						<option value="restaurant">Restaurants</option>
+						<option value="school">Schools</option>
+						<option value="shopping_mall">Shopping malls</option>
+						<option value="stadium">Stadia</option>
+						<option value="university">University</option>
+						<option value="zoo">Zoo</option>
+					</select> within 
+					<select id="distance" onchange="getLocations();">
+						<option value="500">500</option>
+						<option value="1000">1000</option>
+						<option value="1500">1500</option>
+						<option value="2000">2000</option>
+					</select> metres.
+				</form>
+			</div>
 		</div>
-	</form>
-</div>
-<div id="map" style="width: 600px; height: 600px;"></div>
+		<div class="resultDisplay">
+				
+			<div class="mapArea left-align">
+				<div id="map" class="map"></div>
+			</div>
 
-<p id="closeby"></p>
-<p id="placesList"></p>
-<p id="error"></p>
+			<div id="listsArea" class="listsArea left-align">
+				
+				<div id="info"></div>
+				<div class="clear"></div>
+			
+				<h3 class="title">Current Location</h3>
+				<div id="curLocation"></div>
+				<div class="clear"></div>
 
-</body>
+				<div id="favPlaces" class="favPlaces">
+					<h3 class="title">Favorite Locations</h3>
+					<ul id="favPlacesList"></ul>
+				</div>
+				<div class="clear"></div>
+				<div id="closeby" class="right-align"></div>
+				<div id="placesList" class="right-align"></div>
+			</div>
+
+		</div>
+
+	</body>
 </html>
