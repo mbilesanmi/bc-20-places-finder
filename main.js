@@ -76,7 +76,7 @@ function initMap() {
 
       document.getElementById('curLocation').innerHTML = '<b>Address</b>: ' +  address
           + '<br/><b>Latitude</b>: ' + myLocation.lat
-          + ' & <b>Longitude</b>: ' + myLocation.lng;
+          + '<br/><b>Longitude</b>: ' + myLocation.lng;
 
     }, function() {
 
