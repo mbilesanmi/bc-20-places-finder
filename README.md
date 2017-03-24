@@ -11,11 +11,14 @@ SITE URL
 https://mbilesanmi.github.io/bc-20-places-finder/
 
 CURRENT FEATURES
+- Search for a place by name, by current location, by address
+- Select a place as a favorite location to be stored in local storage
 
 FUTURE FEEATURES
 
 Responsive UI
-Integrate Google Autocomplete searching
-Improve UI/UX
-Display more detailed information
-Implement "Get direction"
+- Share place information using social media
+- Integrate Google Autocomplete searching
+- Improve UI/UX
+- Display more detailed information
+- Implement "Get direction"
