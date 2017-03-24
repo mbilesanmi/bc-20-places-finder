@@ -159,7 +159,7 @@ function processRequest(response, status) {
     }
 
     map.fitBounds(bounds);
-    document.getElementById('closeby').innerHTML = 'Found ' + response.length + ' ' + byInterest + ' locations';
+    document.getElementById('closeby').innerHTML = '<p>Found ' + response.length + ' ' + byInterest + ' locations</p>';
   } else {
     
     //  re-initialize the map to clear all markers and location data.
@@ -207,17 +207,48 @@ function clearMarkers() {
 }
 
 function addFav() {
-  var checkBoxList = document.querySelectorAll('input[type=checkbox][name=searchRes]');
+  var checkBoxList = document.querySelectorAll('input[type=checkbox]');
   for (var item of checkBoxList) {
     item.addEventListener('change', function(){
 
       //  check if the user has ticked any checkbox
       if (this.checked) {
+        //  Insert place info into Favorite array
 
         //  Insert place info into local storage
-        insertFav(this.value, this.className);
+        if (typeof(Storage) !== 'undefined') {
+          
+          //  Add Key/Value Pair into myStorage.
+          myStorage.setItem(this.value, this.className);
+          console.log(this.value, this.className);
+
+          /*  Call the function to display the newly added favorite place
+          *   in the favPlace div on the front end
+          */
+          addToFavPlacesList();
+
+          //  Display the number of favorite places the user has.
+          document.getElementById('info').innerHTML = 'There are '
+                + myStorage.length + ' items in your favorite list.';
+        } else {
+          /*  Sorry! No Web Storage support..
+          *  Write an error message here
+          */
+        }
       } else {
-        removeFav(this.value, this.className);
+
+        //  Remove item from the front-end Favorite list
+        var parent = document.getElementById('favPlacesList');
+        var child = document.getElementById(this.value);
+        parent.removeChild(child);
+
+        //  Remove item from myStorage
+        myStorage.removeItem(this.value);
+        console.log(this.className + ' has been removed from the myStorage');
+
+        //  After deleting favPlace, display the number of favorite places the user has.
+        document.getElementById('info').innerHTML = 'There are '
+                + myStorage.length + ' items in your favorite list.';
       }
     });
   }
@@ -236,61 +267,19 @@ function checkClearFav() {
   }
 }
 
-function insertFav(placeId, placeName) {
-  if (typeof(Storage) !== 'undefined') {
-          
-    //  Add Key/Value Pair into myStorage.
-    myStorage.setItem(placeId, placeName);
-    console.log('Successfully added to favorite');
-
-    /* 
-    *   Call the function to display the newly added favorite place
-    *   in the favPlace div on the front end
-    */
-    addToFavPlacesList();
-
-    //  Display the number of favorite places the user has.
-    document.getElementById('info').innerHTML = 'There are '
-          + myStorage.length + ' items in your favorite list.';
-  } else {
-    /*
-    *   Sorry! No Web Storage support..
-    *   Write an error message here
-    */
-  }
-}
-function removeFav(placeId, placeName) {
-  //  Remove item from the front-end Favorite list
-  var row = document.getElementById(placeId);
-  var table = row.parentNode;
-  while ( table && table.tagName != 'TBODY' )
-      table = table.parentNode;
-  if ( !table )
-      return;
-  table.deleteRow(row.rowIndex);
-
-  //  Remove item from myStorage
-  myStorage.removeItem(placeId);
-  console.log(placeName + ' has been removed from the myStorage');
-
-  //  After deleting favPlace, display the number of favorite places the user has.
-  document.getElementById('info').innerHTML = 'There are '
-          + myStorage.length + ' items in your favorite list.';
-}
-
 function checkFav(placeName, placeId) {
   /*
   *   The checkFav function checks if the location has been marked as favorite
   *   If the location is marked favorite, the checkbox is checked
   */
   if (myStorage[placeId]) {
-    document.getElementById('placesList').innerHTML += '<li>' + placeName +
-        ' Unmark as Favourite: <input type="checkbox" name="searchRes" id="' + placeId +
-        '" value="' + placeId + '" class="' + placeName + '" checked/></li><br/>';
+    document.getElementById('placesList').innerHTML += '<div class="li">' + placeName +
+        '         Unmark as Favourite: <input type="checkbox" name="searchRes" id="' + placeId +
+        '" value="' + placeId + '" class="' + placeName + '" checked/></div>';
   } else {
-    document.getElementById('placesList').innerHTML += '<li>' + placeName + 
-        ' Mark as Favourite: <input type="checkbox" name="searchRes" id="' + placeId +
-        '" value="' + placeId + '" class="' + placeName + '"/></li><br/>';
+    document.getElementById('placesList').innerHTML += '<div class="li">' + placeName + 
+        '         Mark as Favourite: <input type="checkbox" name="searchRes" id="' + placeId +
+        '" value="' + placeId + '" class="' + placeName + '"/></div>';
   }
 }
 
@@ -303,13 +292,8 @@ function addToFavPlacesList() {
 
       //  If the placeId exists in the localStorage, then add it to the display
       if (myStorage.key(i) !== null) {
-        
-        var favKey = myStorage.key(i);
-        var favValue = myStorage.getItem(myStorage.key(i));
-        document.getElementById('favPlacesList').innerHTML += '<tr class="' + myStorage.key(i) +'"><td id="'
-            + myStorage.key(i) + '">' + myStorage.getItem(myStorage.key(i)) + '</td><td>'
-            +'<input type="checkbox" id="' + myStorage.key(i) + '" value="' + myStorage.key(i)
-            + '" name="favRes" class="' + myStorage.getItem(myStorage.key(i)) + '" checked/>' + '</tr>';
+        document.getElementById('favPlacesList').innerHTML += '<p id="' + myStorage.key(i)
+              + '">' + myStorage.getItem(myStorage.key(i)) + '</p>';
       }
     };
   } else {

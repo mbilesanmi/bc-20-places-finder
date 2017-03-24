@@ -21,8 +21,6 @@
 					<button onclick="getTextLocation()" id="searchBtn">Search</button>
 				</form>
 				
-				<span>OR</span>
-				
 				<form name="searchBySelect" action="" class="searchForm right-align">
 					Find your preferred
 					<select id="placeOfInterest" onchange="getLocations();">
@@ -100,29 +98,13 @@
 
 						<div id="favLocate" class="tabcontent">
 						  <div id="favPlaces" class="favPlaces">
-						  	<table>
-						  		<thead>
-						  			<tr>
-							  			<th>Location</th>
-								  		<th>Favorite</th>
-							  		</tr>
-							  	</thead>
-						  		<tbody id="favPlacesList"></tbody>							  
-							  </table>
+						  	<div id="favPlacesList"></div>
 						  </div>
 						</div>
 
 						<div id="nearLocate" class="tabcontent">
-							<div id="closeby" class=""></div>
-							<table>
-								<thead>
-						  			<tr>
-							  			<th>Location</th>
-								  		<th>Favorite</th>
-							  		</tr>
-							  	</thead>
-					  		<tbody id="placesList"></tbody>
-						  </table>
+						  <div id="closeby" class=""></div>
+							<div id="placesList" class=""></div>
 						</div>
 						
 					</div>

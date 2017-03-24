@@ -56,6 +56,47 @@ div.header {
 	text-align: center;
 }
 
+.locateDropbtn, .categoryDropbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+/*	Dropdown button on hover & focus */
+.locateDropbtn:hover, .locateDropbtn:focus, .categoryDropbtn:hover, .categoryDropbtn:focus {
+	background-color: #3e8e41;
+}
+
+/*	The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/*	Dropdown Content (Hidden by Default) */
+.locateDrop-content, .categDrop-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/*	Change color of dropdown links on hover */
+.locateDrop-content a:hover, .categDrop-content a:hover {
+	background-color: #f1f1f1;
+}
+
+/*	Show the dropdown menu (use JS to add this class to the .dropdown-content
+		container when the user clicks on the dropdown button) */
+.show {
+	display:block;
+}
+
 #info, #curLocation {
 	margin: 0 auto;
 	padding: 15px 0 0 20px;
@@ -70,7 +111,6 @@ button.searchBtn, select, input[type="text"] {
 	margin-bottom: 10px;
 	padding: 5px;
 	font-size: 14px;
-	font-family: 'Freight Sans Bold', Helvetica, Arial, sans-serif;
 	border-color: #1db78d;
 	border: 1px solid;
 }
@@ -148,12 +188,15 @@ div.tab button {
 /* Change background color of buttons on hover */
 div.tab button:hover {
   background-color: #2b3e40;
+  color: #fff;
+  font-size: 16px;
 }
 
 /* Create an active/current tablink class */
 div.tab button.active {
   background-color: #2b3e50;
   color: #fff;
+  font-size: 16px;
 }
 
 /* Style the tab content */
@@ -163,26 +206,10 @@ div.tab button.active {
   border: 1px solid #ccc;
   border-top: none;
 }
-table, th, td {
-  border: 1px solid #aaa;
-  border-collapse: collapse;
-}
-table {
-  border-spacing: 5px;
-}
-th, td {
-  padding: 5px 10px;
-}
-th {
-  text-align: left;
-  font-size: 16px;
-  color: white;
-  background-color: #444;
-}
 
-table tr:nth-child(even) {
-  background-color: #eee;
-}
-table tr:nth-child(odd) {
-  background-color: #fff;
+#placesList .li {
+  list-style: none;
+  border: 1px solid #ddd;
+  margin: 0;
+  padding: 10px;
 }
