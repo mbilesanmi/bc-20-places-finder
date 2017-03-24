@@ -29,7 +29,7 @@ body {
 	color: #1d2129;
 	line-height: 1.34;
 	font-family: Helvetica, Arial, sans-serif;
-	font-size: 13px;
+	font-size: 15px;
 }
 
 div {
@@ -59,10 +59,11 @@ div.header {
 
 #info, #curLocation {
 	margin: 0 auto;
-	padding: 0 10px;
+	padding: 15px 0 0 20px;
 }
 #info {
 	background-color: ;
+	margin-top: 20px;
 }
 
 button.searchBtn, select, input[type="text"] {
@@ -161,4 +162,27 @@ div.tab button.active {
   padding: 6px 12px;
   border: 1px solid #ccc;
   border-top: none;
+}
+table, th, td {
+  border: 1px solid #aaa;
+  border-collapse: collapse;
+}
+table {
+  border-spacing: 5px;
+}
+th, td {
+  padding: 5px 10px;
+}
+th {
+  text-align: left;
+  font-size: 16px;
+	color: white;
+  background-color: #444;
+}
+
+table tr:nth-child(even) {
+    background-color: #eee;
+}
+table tr:nth-child(odd) {
+    background-color: #fff;
 }
