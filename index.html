@@ -14,57 +14,67 @@
 			<h1 class="left-align">Places Finder</h1>
 
 			<div class="queryBox">
-			
-				<form name="searchPlaces" id="searchPlaces" action="" class="searchForm left-align">
-					<label>Enter your preferred destination: </label>
-					<input type="text" name="" id="placeToFind" class="" required/>
-					<button onclick="getTextLocation()" id="searchBtn">Search</button>
-				</form>
-				
-				<form name="searchBySelect" action="" class="searchForm right-align">
-					Find your preferred
-					<select id="placeOfInterest" onchange="getLocations();">
-						<option value="">Place of Interest</option>
-						<option value="airport">Airports</option>
-						<option value="amusement_park">Amusement parks</option>
-						<option value="art_gallery">Art galleries</option>
-						<option value="atm">ATMs</option>
-						<option value="bakery">Bakeries</option>
-						<option value="bank">Banks</option>
-						<option value="bar">Bars</option>
-						<option value="beauty_salon">Beauty salons</option>
-						<option value="book_store">Book stores</option>
-						<option value="car_dealer">Car dealers</option>
-						<option value="car_repair">Car repair</option>
-						<option value="church">Churches</option>
-						<option value="convenience_store">Convenience stores</option>
-						<option value="courthouse">Courthouses</option>
-						<option value="dentist">Dentists</option>
-						<option value="department_store">Department stores</option>
-						<option value="embassy">Embassies</option>
-						<option value="hospital">Hospitals</option>
-						<option value="library">Libraries</option>
-						<option value="local_government_office">LG's Office</option>
-						<option value="mosque">Mosque</option>
-						<option value="movie_theater">Movie theater</option>
-						<option value="museum">Museum</option>
-						<option value="night_club">Night clubs</option>
-						<option value="police">Police</option>
-						<option value="post_office">Post office</option>
-						<option value="restaurant">Restaurants</option>
-						<option value="school">Schools</option>
-						<option value="shopping_mall">Shopping malls</option>
-						<option value="stadium">Stadia</option>
-						<option value="university">University</option>
-						<option value="zoo">Zoo</option>
-					</select> within 
-					<select id="distance" onchange="getLocations();">
-						<option value="500">500</option>
-						<option value="1000">1000</option>
-						<option value="1500">1500</option>
-						<option value="2000">2000</option>
-					</select> metres.
-				</form>
+				<div class="dropdown">
+				  <button onclick="locationDropdown()" class="locateDropbtn">Search By Location</button>
+				  <div id="locationDropdown" class="locateDrop-content">
+				  	<form name="searchPlaces" id="searchPlaces" action="" class="searchForm left-align">
+							<input type="text" name="" id="placeToFind" class="" required/>
+							<button onclick="getTextLocation()" id="searchBtn">Search</button>
+						</form>
+				    <a href="#">Link 1</a>
+				  </div>
+				</div>
+
+				<div class="dropdown">
+				  <button onclick="categoryDropdown()" class="categoryDropbtn">Search By Category</button>
+				  <div id="categoryDropdown" class="categDrop-content">
+				  	<form name="searchBySelect" action="" class="searchForm right-align">
+							<select id="placeOfInterest" onchange="getLocations();">
+								<option value="">Place of Interest</option>
+								<option value="airport">Airports</option>
+								<option value="amusement_park">Amusement parks</option>
+								<option value="art_gallery">Art galleries</option>
+								<option value="atm">ATMs</option>
+								<option value="bakery">Bakeries</option>
+								<option value="bank">Banks</option>
+								<option value="bar">Bars</option>
+								<option value="beauty_salon">Beauty salons</option>
+								<option value="book_store">Book stores</option>
+								<option value="car_dealer">Car dealers</option>
+								<option value="car_repair">Car repair</option>
+								<option value="church">Churches</option>
+								<option value="convenience_store">Convenience stores</option>
+								<option value="courthouse">Courthouses</option>
+								<option value="dentist">Dentists</option>
+								<option value="department_store">Department stores</option>
+								<option value="embassy">Embassies</option>
+								<option value="hospital">Hospitals</option>
+								<option value="library">Libraries</option>
+								<option value="local_government_office">LG's Office</option>
+								<option value="mosque">Mosque</option>
+								<option value="movie_theater">Movie theater</option>
+								<option value="museum">Museum</option>
+								<option value="night_club">Night clubs</option>
+								<option value="police">Police</option>
+								<option value="post_office">Post office</option>
+								<option value="restaurant">Restaurants</option>
+								<option value="school">Schools</option>
+								<option value="shopping_mall">Shopping malls</option>
+								<option value="stadium">Stadia</option>
+								<option value="university">University</option>
+								<option value="zoo">Zoo</option>
+							</select> within 
+							<select id="distance" onchange="getLocations();">
+								<option value="500">500</option>
+								<option value="1000">1000</option>
+								<option value="1500">1500</option>
+								<option value="2000">2000</option>
+							</select> metres.
+						</form>
+				    <a href="#">Link 1</a>
+				  </div>
+				</div>
+
 			</div>
 		</div>
 		<div class="resultDisplay">
@@ -92,19 +102,35 @@
 						<div class="clear"></div>
 
 						<div class="tab">
-						  <button class="tablinks" onclick="openTab(event, 'favLocate')" id="defaultOpen">Favorite</button>
-						  <button class="tablinks" onclick="openTab(event, 'nearLocate')">Nearby</button>
+						  <button class="tablinks" onclick="openTab(event, 'favLocate')">Favorite</button>
+						  <button class="tablinks" onclick="openTab(event, 'nearLocate')" id="defaultOpen">Nearby</button>
 						</div>
 
 						<div id="favLocate" class="tabcontent">
 						  <div id="favPlaces" class="favPlaces">
-						  	<div id="favPlacesList"></div>
+						  	<table>
+						  		<thead>
+						  			<tr>
+							  			<th>Location</th>
+								  		<th>Favorite</th>
+							  		</tr>
+							  	</thead>
+						  		<tbody id="favPlacesList"></tbody>							  
+							  </table>
 						  </div>
 						</div>
 
 						<div id="nearLocate" class="tabcontent">
-						  <div id="closeby" class=""></div>
-							<div id="placesList" class=""></div>
+							<div id="closeby" class=""></div>
+							<table>
+								<thead>
+						  			<tr>
+							  			<th>Location</th>
+								  		<th>Favorite</th>
+							  		</tr>
+							  	</thead>
+					  		<tbody id="placesList"></tbody>
+						  </table>
 						</div>
 						
 					</div>
