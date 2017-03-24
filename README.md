@@ -15,3 +15,7 @@ CURRENT FEATURES
 FUTURE FEEATURES
 
 Responsive UI
+Integrate Google Autocomplete searching
+Improve UI/UX
+Display more detailed information
+Implement "Get direction"
