@@ -92,19 +92,35 @@
 						<div class="clear"></div>
 
 						<div class="tab">
-						  <button class="tablinks" onclick="openTab(event, 'favLocate')" id="defaultOpen">Favorite</button>
-						  <button class="tablinks" onclick="openTab(event, 'nearLocate')">Nearby</button>
+						  <button class="tablinks" onclick="openTab(event, 'favLocate')">Favorite</button>
+						  <button class="tablinks" onclick="openTab(event, 'nearLocate')" id="defaultOpen">Nearby</button>
 						</div>
 
 						<div id="favLocate" class="tabcontent">
 						  <div id="favPlaces" class="favPlaces">
-						  	<div id="favPlacesList"></div>
+						  	<table>
+						  		<thead>
+						  			<tr>
+							  			<th>Location</th>
+								  		<th>Favorite</th>
+							  		</tr>
+							  	</thead>
+						  		<tbody id="favPlacesList"></tbody>							  
+							  </table>
 						  </div>
 						</div>
 
 						<div id="nearLocate" class="tabcontent">
-						  <div id="closeby" class=""></div>
-							<div id="placesList" class=""></div>
+							<div id="closeby" class=""></div>
+							<table>
+								<thead>
+						  			<tr>
+							  			<th>Location</th>
+								  		<th>Favorite</th>
+							  		</tr>
+							  	</thead>
+					  		<tbody id="placesList"></tbody>
+						  </table>
 						</div>
 						
 					</div>
