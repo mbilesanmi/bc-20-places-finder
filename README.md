@@ -13,4 +13,5 @@ https://mbilesanmi.github.io/bc-20-places-finder/
 CURRENT FEATURES
 
 FUTURE FEEATURES
+
 Responsive UI
